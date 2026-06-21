@@ -1,15 +1,40 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import { useColorScheme } from 'react-native';
+import { DarkTheme } from '@react-navigation/native';
+import { ThemeProvider } from '@react-navigation/core';
+import { Stack } from 'expo-router';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { AuthGate } from '@/components/auth-gate';
+import { AuthProvider } from '@/contexts/auth-provider';
+import { GioGoBrand } from '@/constants/theme';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+const AppTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: GioGoBrand.black,
+    card: GioGoBrand.black,
+  },
+};
+
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider value={AppTheme}>
+        <AnimatedSplashOverlay />
+        <AuthGate />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: GioGoBrand.black },
+          }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="login" />
+          <Stack.Screen name="signup" />
+          <Stack.Screen name="auth/callback" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="games/[id]" />
+        </Stack>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }

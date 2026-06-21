@@ -1,6 +1,6 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * GioGo Rewards brand palette (extracted from assets/Rich_Logo.png).
+ * Silver #D7C4D5 | Deep purple #37018E | Light purple #8F14FC | Gold #F9BD28 | Black #000000
  */
 
 import '@/global.css';
@@ -9,32 +9,57 @@ import { Platform } from 'react-native';
 
 export const Colors = {
   light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
+    text: '#ffffff',
+    background: '#000000',
+    backgroundElement: '#1a1a1a',
+    backgroundSelected: '#2a2a2a',
+    textSecondary: '#D7C4D5',
   },
   dark: {
     text: '#ffffff',
     background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
+    backgroundElement: '#1a1a1a',
+    backgroundSelected: '#2a2a2a',
+    textSecondary: '#D7C4D5',
   },
+} as const;
+
+export const GioGoBrand = {
+  black: '#000000',
+  silver: '#D7C4D5',
+  deepPurple: '#37018E',
+  lightPurple: '#8F14FC',
+  gold: '#F9BD28',
+  /** Primary brand purple (alias for deepPurple) */
+  purple: '#37018E',
+  /** Secondary accent (alias for lightPurple; replaces legacy green) */
+  green: '#8F14FC',
+  accent: '#8F14FC',
+  backgroundAccent: '#12032A',
+  loginGradient: 'linear-gradient(90deg, #37018E, #F9BD28)',
+  signupGradient: 'linear-gradient(90deg, #F9BD28, #8F14FC)',
+  aboutGradient: 'linear-gradient(90deg, #37018E, #8F14FC, #F9BD28)',
+} as const;
+
+/** @deprecated Use GioGoBrand */
+export const EngageoBrand = GioGoBrand;
+
+export const TabBarColors = {
+  active: GioGoBrand.lightPurple,
+  inactive: '#A894B8',
+  inactiveBackground: 'rgba(143, 20, 252, 0.12)',
+  activeBackground: 'rgba(143, 20, 252, 0.22)',
+  barBackground: '#0d0d0d',
+  barBorder: '#2a2a2a',
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
     serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
     rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: 'ui-monospace',
   },
   default: {

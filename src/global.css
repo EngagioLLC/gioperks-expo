@@ -1,4 +1,13 @@
 :root {
+  --giogo-black: #000000;
+  --giogo-silver: #d7c4d5;
+  --giogo-deep-purple: #37018e;
+  --giogo-light-purple: #8f14fc;
+  --giogo-gold: #f9bd28;
+  --giogo-purple: #37018e;
+  --giogo-green: #8f14fc;
+  --giogo-accent: #8f14fc;
+  --giogo-background-accent: #12032a;
   --font-display:
     Spline Sans, Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji,
     Segoe UI Symbol, Noto Color Emoji;

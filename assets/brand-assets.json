@@ -1,0 +1,28 @@
+{
+  "chestAspect": 0.8424962852897474,
+  "wordmarkAspect": 1.4416243654822336,
+  "logoAspect": 1.3333333333333333,
+  "chestWidth": 567,
+  "chestHeight": 673,
+  "wordmarkWidth": 852,
+  "wordmarkHeight": 591,
+  "chestCrop": {
+    "left": 0,
+    "top": 218,
+    "width": 567,
+    "height": 673
+  },
+  "wordmarkCrop": {
+    "left": 552,
+    "top": 256,
+    "width": 852,
+    "height": 591
+  },
+  "palette": {
+    "black": "#000000",
+    "silver": "#D7C4D5",
+    "lightPurple": "#8F14FC",
+    "deepPurple": "#37018E",
+    "gold": "#F9BD28"
+  }
+}
