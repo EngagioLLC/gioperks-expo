@@ -5,17 +5,49 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { DASHBOARD_MOCK } from '@/constants/app-mock';
 import { BottomTabInset, GioGoBrand, Spacing } from '@/constants/theme';
+import type { PointsWallet } from '@/types/points-wallet';
+import type { RewardReservation } from '@/types/reward-reservation';
+import type { UserStreak } from '@/types/user-streak';
+
+const WEEK_DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as const;
 
 type HomeDashboardProps = {
   displayName: string;
+  streak?: UserStreak | null;
+  wallet?: PointsWallet | null;
+  reservations?: RewardReservation[];
   onGamePress?: (gameId: string) => void;
   onSeeAllGames?: () => void;
+  onSeeAllRewards?: () => void;
 };
 
-export function HomeDashboard({ displayName, onGamePress, onSeeAllGames }: HomeDashboardProps) {
+function formatExpiry(expiresAt: string): string {
+  const expires = new Date(expiresAt);
+  if (Number.isNaN(expires.getTime())) {
+    return 'Expires soon';
+  }
+  return `Expires ${expires.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+}
+
+export function HomeDashboard({
+  displayName,
+  streak,
+  wallet,
+  reservations = [],
+  onGamePress,
+  onSeeAllGames,
+  onSeeAllRewards,
+}: HomeDashboardProps) {
   const insets = useSafeAreaInsets();
-  const { points, level, streakDays, streakCompletedDays, weekDays, featuredGames, nearbyOffers } =
-    DASHBOARD_MOCK;
+  const { featuredGames } = DASHBOARD_MOCK;
+  const points = wallet?.available_balance ?? 0;
+  const pointsHint =
+    wallet && wallet.reserved_balance > 0
+      ? `${wallet.reserved_balance.toLocaleString()} GioPoints reserved`
+      : 'Keep playing!';
+  const streakDays = streak?.current_streak ?? 0;
+  const weekDays = streak?.week_days ?? WEEK_DAYS;
+  const weekActive = streak?.week_active ?? [false, false, false, false, false, false, false];
 
   return (
     <View style={styles.container}>
@@ -36,24 +68,12 @@ export function HomeDashboard({ displayName, onGamePress, onSeeAllGames }: HomeD
         </View>
 
         <View style={styles.card}>
-          <View style={styles.pointsLevelRow}>
-            <View style={styles.pointsLevelCol}>
-              <Text style={styles.cardLabel}>Your Points</Text>
-              <View style={styles.pointsRow}>
-                <Text style={styles.pointsValue}>{points.toLocaleString()}</Text>
-                <DashboardIcon name="star" size={22} color={GioGoBrand.gold} />
-              </View>
-              <Text style={styles.cardHint}>Keep playing!</Text>
-            </View>
-            <View style={styles.divider} />
-            <View style={styles.pointsLevelCol}>
-              <Text style={styles.cardLabel}>Level</Text>
-              <View style={styles.pointsRow}>
-                <Text style={styles.levelValue}>{level}</Text>
-                <DashboardIcon name="crown" size={22} color={GioGoBrand.gold} />
-              </View>
-            </View>
+          <Text style={styles.cardLabel}>Your GioPoints</Text>
+          <View style={styles.pointsRow}>
+            <Text style={styles.pointsValue}>{points.toLocaleString()}</Text>
+            <DashboardIcon name="star" size={22} color={GioGoBrand.gold} />
           </View>
+          <Text style={styles.cardHint}>{pointsHint}</Text>
         </View>
 
         <View style={styles.card}>
@@ -66,7 +86,7 @@ export function HomeDashboard({ displayName, onGamePress, onSeeAllGames }: HomeD
           </View>
           <View style={styles.streakDays}>
             {weekDays.map((day, index) => {
-              const completed = index < streakCompletedDays;
+              const completed = weekActive[index] ?? false;
               return (
                 <View key={`${day}-${index}`} style={styles.streakDayCol}>
                   <View style={[styles.streakCircle, completed && styles.streakCircleDone]}>
@@ -102,10 +122,7 @@ export function HomeDashboard({ displayName, onGamePress, onSeeAllGames }: HomeD
                   <Text style={styles.listTitle}>{game.title}</Text>
                   <Text style={styles.listSubtitle}>{game.genre}</Text>
                 </View>
-                <View style={styles.rewardCol}>
-                  <Text style={styles.rewardPoints}>+{game.points}</Text>
-                  <DashboardIcon name="star" size={16} color={GioGoBrand.gold} />
-                </View>
+                <DashboardIcon name="chevron" size={18} color="rgba(215,196,213,0.55)" />
               </Pressable>
               {index < featuredGames.length - 1 ? <View style={styles.listDivider} /> : null}
             </View>
@@ -113,25 +130,37 @@ export function HomeDashboard({ displayName, onGamePress, onSeeAllGames }: HomeD
         </View>
 
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Nearby Offers</Text>
-          <Pressable accessibilityRole="button" onPress={onSeeAllGames}>
+          <Text style={styles.sectionTitle}>Active Redemptions</Text>
+          <Pressable accessibilityRole="button" onPress={onSeeAllRewards}>
             <Text style={styles.seeAll}>See all</Text>
           </Pressable>
         </View>
 
         <View style={styles.listCard}>
-          {nearbyOffers.map((offer) => (
-            <Pressable key={offer.id} style={styles.listRow} accessibilityRole="button">
-              <View style={[styles.thumb, { backgroundColor: offer.color }]}>
-                <DashboardIcon name="coffee" size={24} />
+          {reservations.length === 0 ? (
+            <View style={styles.emptyRow}>
+              <Text style={styles.emptyText}>No active redemptions yet</Text>
+            </View>
+          ) : (
+            reservations.map((reservation, index) => (
+              <View key={reservation.reservation_id}>
+                <View style={styles.listRow}>
+                  <View style={[styles.thumb, styles.reservationThumb]}>
+                    <DashboardIcon name="gift" size={24} color={GioGoBrand.accent} />
+                  </View>
+                  <View style={styles.listBody}>
+                    <Text style={styles.listTitle}>Code {reservation.reservation_code}</Text>
+                    <Text style={styles.listSubtitle}>
+                      {reservation.points_reserved.toLocaleString()} GioPoints reserved
+                    </Text>
+                    <Text style={styles.reservationMeta}>{formatExpiry(reservation.expires_at)}</Text>
+                  </View>
+                  <DashboardIcon name="chevron" size={18} color="#666" />
+                </View>
+                {index < reservations.length - 1 ? <View style={styles.listDivider} /> : null}
               </View>
-              <View style={styles.listBody}>
-                <Text style={styles.listTitle}>{offer.title}</Text>
-                <Text style={styles.listSubtitle}>{offer.merchant}</Text>
-              </View>
-              <DashboardIcon name="chevron" size={18} color="#666" />
-            </Pressable>
-          ))}
+            ))
+          )}
         </View>
       </ScrollView>
     </View>
@@ -173,20 +202,7 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     borderWidth: 1,
     borderColor: '#2a2a2a',
-  },
-  pointsLevelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  pointsLevelCol: {
-    flex: 1,
     gap: 4,
-  },
-  divider: {
-    width: 1,
-    height: 56,
-    backgroundColor: '#2a2a2a',
-    marginHorizontal: Spacing.three,
   },
   cardLabel: {
     color: '#B0B4BA',
@@ -200,11 +216,6 @@ const styles = StyleSheet.create({
   pointsValue: {
     color: GioGoBrand.accent,
     fontSize: 26,
-    fontWeight: '700',
-  },
-  levelValue: {
-    color: '#ffffff',
-    fontSize: 22,
     fontWeight: '700',
   },
   cardHint: {
@@ -308,14 +319,20 @@ const styles = StyleSheet.create({
     color: '#888',
     fontSize: 14,
   },
-  rewardCol: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
+  reservationThumb: {
+    backgroundColor: '#2a1a3a',
   },
-  rewardPoints: {
-    color: '#ffffff',
-    fontSize: 15,
-    fontWeight: '700',
+  reservationMeta: {
+    color: GioGoBrand.accent,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  emptyRow: {
+    padding: Spacing.four,
+    alignItems: 'center',
+  },
+  emptyText: {
+    color: '#888',
+    fontSize: 14,
   },
 });

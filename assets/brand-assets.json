@@ -1,28 +1,21 @@
 {
-  "chestAspect": 0.8424962852897474,
-  "wordmarkAspect": 1.4416243654822336,
-  "logoAspect": 1.3333333333333333,
-  "chestWidth": 567,
-  "chestHeight": 673,
-  "wordmarkWidth": 852,
-  "wordmarkHeight": 591,
+  "taglineAspect": 3.7134502923976607,
+  "taglineWidth": 635,
+  "taglineHeight": 171,
+  "chestAspect": 1.0123893805309736,
+  "wordmarkAspect": 3.255813953488372,
+  "chestWidth": 572,
+  "chestHeight": 565,
+  "wordmarkWidth": 840,
+  "wordmarkHeight": 258,
   "chestCrop": {
     "left": 0,
-    "top": 218,
-    "width": 567,
-    "height": 673
+    "top": 0,
+    "width": 572,
+    "height": 565
   },
-  "wordmarkCrop": {
-    "left": 552,
-    "top": 256,
-    "width": 852,
-    "height": 591
-  },
-  "palette": {
-    "black": "#000000",
-    "silver": "#D7C4D5",
-    "lightPurple": "#8F14FC",
-    "deepPurple": "#37018E",
-    "gold": "#F9BD28"
-  }
+  "chestSource": "assets/GioGo_chest.original.webp",
+  "minimalGlow": false,
+  "cosmicBg": false,
+  "gioWordmarkAspect": 1.8073770491803278
 }

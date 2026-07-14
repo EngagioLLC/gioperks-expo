@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "GioGo Rewards",
+    "name": "GioGo",
     "slug": "giogo-rewards",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -28,8 +28,8 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#000000",
-          "image": "./assets/icon.png",
-          "imageWidth": 200
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220
         }
       ]
     ],

@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Platform, StyleSheet, Text, View } from 'react-native';
 
 import { createSessionFromUrl } from '@/lib/auth-oauth';
+import { recordLogin } from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 import { GioGoBrand } from '@/constants/theme';
 
 export default function AuthCallbackScreen() {
@@ -19,6 +21,14 @@ export default function AuthCallbackScreen() {
 
       try {
         await createSessionFromUrl(url);
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        try {
+          await recordLogin(session?.access_token);
+        } catch {
+          // Profile sync can retry from the home tab.
+        }
         router.replace('/(tabs)/home');
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Could not complete sign in');

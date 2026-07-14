@@ -44,7 +44,7 @@ export function FruitBlastGame({ gameId }: FruitBlastGameProps) {
         </View>
         <View style={styles.statDivider} />
         <View style={styles.stat}>
-          <Text style={styles.statLabel}>Points</Text>
+          <Text style={styles.statLabel}>GioPoints</Text>
           <View style={styles.pointsRow}>
             <Text style={styles.statValue}>+{points}</Text>
             <DashboardIcon name="star" size={16} color={GioGoBrand.gold} />

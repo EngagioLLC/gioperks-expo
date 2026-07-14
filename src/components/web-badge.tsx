@@ -12,7 +12,7 @@ export function WebBadge() {
     <ThemedView style={styles.container}>
       <BrandLogo variant="wordmark" style={styles.logo} />
       <ThemedText type="code" themeColor="textSecondary" style={styles.versionText}>
-        GioGo Rewards v{version}
+        GioGo v{version}
       </ThemedText>
     </ThemedView>
   );

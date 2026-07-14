@@ -29,8 +29,7 @@ export default function TabsLayout() {
         },
       }}>
       <Tabs.Screen name="home" options={{ title: 'Home', tabBarIcon: tabIcon('home') }} />
-      <Tabs.Screen name="games" options={{ title: 'Games', tabBarIcon: tabIcon('sports-esports') }} />
-      <Tabs.Screen name="scan" options={{ title: 'Scan', tabBarIcon: tabIcon('qr-code-scanner') }} />
+      <Tabs.Screen name="games" options={{ title: 'Arcade', tabBarIcon: tabIcon('sports-esports') }} />
       <Tabs.Screen
         name="rewards"
         options={{ title: 'Rewards', tabBarIcon: tabIcon('card-giftcard') }}

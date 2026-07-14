@@ -15,7 +15,7 @@ export function ScanView() {
           { paddingTop: insets.top + Spacing.three, paddingBottom: BottomTabInset + Spacing.five },
         ]}>
         <Text style={styles.title}>Scan</Text>
-        <Text style={styles.subtitle}>Scan a QR code at a participating location to earn points or redeem rewards.</Text>
+        <Text style={styles.subtitle}>Scan a QR code at a participating location to earn GioPoints or redeem rewards.</Text>
 
         <View style={styles.scanFrame}>
           <View style={[styles.corner, styles.topLeft]} />

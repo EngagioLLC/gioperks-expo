@@ -1,8 +1,12 @@
+/** Fallback daily GioPoints cap when wallet payload is unavailable. */
+export const DAILY_EARNING_CAP = 250;
+export const DAILY_ARCADE_CAP = 200;
+export const DAILY_LOGIN_STREAK_CAP = 50;
+
 export type MockGame = {
   id: string;
   title: string;
   genre: string;
-  points: number;
   color: string;
 };
 
@@ -17,14 +21,10 @@ export type MockReward = {
 
 export const DASHBOARD_MOCK = {
   points: 2450,
-  level: 'Gold',
-  streakDays: 7,
-  streakCompletedDays: 5,
-  weekDays: ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as const,
   featuredGames: [
-    { id: '1', title: 'Fruit Blast', genre: 'Puzzle', points: 150, color: '#FF6B6B' },
-    { id: '2', title: 'Space Runner', genre: 'Arcade', points: 200, color: '#4ECDC4' },
-    { id: '3', title: 'Trivia Masters', genre: 'Trivia', points: 100, color: '#9B59B6' },
+    { id: '1', title: 'Fruit Blast', genre: 'Puzzle', color: '#FF6B6B' },
+    { id: '2', title: 'Space Runner', genre: 'Arcade', color: '#4ECDC4' },
+    { id: '3', title: 'Trivia Masters', genre: 'Trivia', color: '#9B59B6' },
   ],
   nearbyOffers: [
     {
@@ -38,11 +38,11 @@ export const DASHBOARD_MOCK = {
 } as const;
 
 export const GAMES_MOCK: MockGame[] = [
-  { id: '1', title: 'Fruit Blast', genre: 'Puzzle', points: 150, color: '#FF6B6B' },
-  { id: '2', title: 'Space Runner', genre: 'Arcade', points: 200, color: '#4ECDC4' },
-  { id: '3', title: 'Trivia Masters', genre: 'Trivia', points: 100, color: '#9B59B6' },
-  { id: '4', title: 'Bubble Pop', genre: 'Casual', points: 120, color: '#3498DB' },
-  { id: '5', title: 'Word Connect', genre: 'Word', points: 130, color: '#E67E22' },
+  { id: '1', title: 'Fruit Blast', genre: 'Puzzle', color: '#FF6B6B' },
+  { id: '2', title: 'Space Runner', genre: 'Arcade', color: '#4ECDC4' },
+  { id: '3', title: 'Trivia Masters', genre: 'Trivia', color: '#9B59B6' },
+  { id: '4', title: 'Bubble Pop', genre: 'Casual', color: '#3498DB' },
+  { id: '5', title: 'Word Connect', genre: 'Word', color: '#E67E22' },
 ];
 
 export const REWARDS_MOCK: MockReward[] = [

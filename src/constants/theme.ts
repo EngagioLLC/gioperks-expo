@@ -1,5 +1,5 @@
 /**
- * GioGo Rewards brand palette (extracted from assets/Rich_Logo.png).
+ * GioGo brand palette (extracted from assets/Rich_Logo.png).
  * Silver #D7C4D5 | Deep purple #37018E | Light purple #8F14FC | Gold #F9BD28 | Black #000000
  */
 

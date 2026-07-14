@@ -61,16 +61,12 @@ export function ProfileView() {
             </View>
           )}
           <Text style={styles.name}>{displayName}</Text>
-          <View style={styles.badge}>
-            <DashboardIcon name="crown" size={16} color={GioGoBrand.gold} />
-            <Text style={styles.badgeText}>{DASHBOARD_MOCK.level} Member</Text>
-          </View>
         </View>
 
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>{DASHBOARD_MOCK.points.toLocaleString()}</Text>
-            <Text style={styles.statLabel}>Points Balance</Text>
+            <Text style={styles.statLabel}>GioPoints Balance</Text>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>{DASHBOARD_MOCK.badgesEarned}</Text>
@@ -160,20 +156,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 22,
     fontWeight: '700',
-  },
-  badge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: '#2a2a2a',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: 6,
-    borderRadius: 20,
-  },
-  badgeText: {
-    color: GioGoBrand.gold,
-    fontSize: 14,
-    fontWeight: '600',
   },
   statsRow: {
     flexDirection: 'row',

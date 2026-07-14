@@ -2,25 +2,24 @@ import { Image } from 'expo-image';
 import { StyleSheet, useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import GioGoChest from '@/assets/GioGo_chest.webp';
-import GioGoLogo from '@/assets/GioGo_logo.webp';
 import GioGoWordmark from '@/assets/GioGo_wordmark.webp';
+import brandAssets from '@/assets/brand-assets.json';
 
-const CHEST_ASPECT = 567 / 673;
-const WORDMARK_ASPECT = 852 / 591;
-const FULL_LOGO_ASPECT = 1448 / 1086;
+const CHEST_ASPECT = brandAssets.chestAspect;
+const WORDMARK_ASPECT = brandAssets.wordmarkAspect;
 
 const BRAND_HORIZONTAL_PADDING = 40;
 const BRAND_MAX_WIDTH = 300;
 const CHEST_SCALE = 0.88;
 const CHEST_OFFSET_X = 0;
-const CHEST_MARGIN_BOTTOM = -20;
+const CHEST_MARGIN_BOTTOM = 0;
 const WORDMARK_OFFSET_X = 0;
-const WORDMARK_OFFSET_Y = -52;
+const WORDMARK_OFFSET_Y = -6;
 const WORDMARK_FRAME_RATIO = 0.8 * 0.85 * 1.15 * 1.1 * 1.1;
 
 type BrandLogoProps = {
-  /** `stacked` = chest over wordmark; `full` = combined logo; `icon` | `wordmark` = single asset */
-  variant?: 'stacked' | 'full' | 'icon' | 'wordmark';
+  /** `stacked` = chest over wordmark; `icon` | `wordmark` = single asset */
+  variant?: 'stacked' | 'icon' | 'wordmark';
   style?: StyleProp<ViewStyle>;
 };
 
@@ -89,16 +88,6 @@ export function BrandLogo({ variant = 'stacked', style }: BrandLogoProps) {
     );
   }
 
-  if (variant === 'full') {
-    const fullWidth = Math.min(windowWidth - BRAND_HORIZONTAL_PADDING, 360);
-    const fullHeight = fullWidth / FULL_LOGO_ASPECT;
-    return (
-      <View style={[styles.fullLogo, { width: fullWidth, height: fullHeight }, style]}>
-        <BrandImage source={GioGoLogo} width={fullWidth} height={fullHeight} />
-      </View>
-    );
-  }
-
   return (
     <View style={[styles.stacked, style]}>
       <View style={[styles.stackedInner, { width: chestWidth }]}>
@@ -132,10 +121,6 @@ const styles = StyleSheet.create({
   chestSlot: {
     alignItems: 'center',
     justifyContent: 'center',
-    flexShrink: 0,
-  },
-  fullLogo: {
-    alignSelf: 'center',
     flexShrink: 0,
   },
   chestOnly: {

@@ -3,7 +3,8 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { DashboardIcon } from '@/components/dashboard-icon';
-import { DASHBOARD_MOCK, REWARDS_MOCK, type MockReward } from '@/constants/app-mock';
+import { useUserWallet } from '@/hooks/use-user-wallet';
+import { REWARDS_MOCK, type MockReward } from '@/constants/app-mock';
 import { BottomTabInset, GioGoBrand, Spacing } from '@/constants/theme';
 
 type RewardFilter = 'all' | 'discounts' | 'products' | 'experiences';
@@ -24,8 +25,10 @@ function filterRewards(filter: RewardFilter): MockReward[] {
 
 export function RewardsCatalog() {
   const insets = useSafeAreaInsets();
+  const { wallet } = useUserWallet();
   const [activeFilter, setActiveFilter] = useState<RewardFilter>('all');
   const rewards = filterRewards(activeFilter);
+  const points = wallet?.available_balance ?? 0;
 
   return (
     <View style={styles.container}>
@@ -39,8 +42,8 @@ export function RewardsCatalog() {
 
         <View style={styles.pointsCard}>
           <View>
-            <Text style={styles.pointsLabel}>Your Points</Text>
-            <Text style={styles.pointsValue}>{DASHBOARD_MOCK.points.toLocaleString()}</Text>
+            <Text style={styles.pointsLabel}>Your GioPoints</Text>
+            <Text style={styles.pointsValue}>{points.toLocaleString()}</Text>
           </View>
           <DashboardIcon name="gift" size={36} color={GioGoBrand.accent} />
         </View>
@@ -74,7 +77,7 @@ export function RewardsCatalog() {
                 <View style={styles.listBody}>
                   <Text style={styles.listTitle}>{reward.title}</Text>
                   <Text style={styles.listSubtitle}>{reward.merchant}</Text>
-                  <Text style={styles.pointsCost}>{reward.pointsCost.toLocaleString()} pts</Text>
+                  <Text style={styles.pointsCost}>{reward.pointsCost.toLocaleString()} GioPoints</Text>
                 </View>
                 <Pressable style={styles.redeemButton} accessibilityRole="button">
                   <Text style={styles.redeemText}>Redeem</Text>

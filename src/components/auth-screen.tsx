@@ -18,7 +18,7 @@ import { HomeButton } from '@/components/home-button';
 import { OAuthButton } from '@/components/oauth-button';
 import { useAuth } from '@/contexts/auth-provider';
 import { GioGoBrand, Spacing } from '@/constants/theme';
-import { fetchApi } from '@/lib/api';
+import { recordLogin } from '@/lib/api';
 
 type AuthMode = 'signIn' | 'signUp';
 
@@ -40,13 +40,15 @@ export function AuthScreen({ mode }: AuthScreenProps) {
   const busy = submitting || oauthProvider !== null;
   const isSignUp = mode === 'signUp';
 
-  const finishSuccess = async () => {
+  const finishSuccess = async (accessToken?: string) => {
     if (process.env.EXPO_PUBLIC_API_URL) {
       try {
-        await fetchApi('/api/v1/auth/me');
-      } catch {
-        // Profile sync can retry from the home tab.
+        await recordLogin(accessToken);
+      } catch (err) {
+        console.warn('[auth] Backend profile sync failed:', err);
       }
+    } else {
+      console.warn('[auth] EXPO_PUBLIC_API_URL is not set; skipping backend profile sync');
     }
     router.replace('/(tabs)/home');
   };
@@ -88,13 +90,13 @@ export function AuthScreen({ mode }: AuthScreenProps) {
       if (isSignUp) {
         const { session } = await signUp(trimmedEmail, password);
         if (session) {
-          await finishSuccess();
+          await finishSuccess(session.access_token);
         } else {
           setMessage('Account created. Check your email to confirm, then sign in.');
         }
       } else {
-        await signIn(trimmedEmail, password);
-        await finishSuccess();
+        const session = await signIn(trimmedEmail, password);
+        await finishSuccess(session?.access_token);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Authentication failed');
